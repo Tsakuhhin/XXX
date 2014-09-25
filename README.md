@@ -2,7 +2,7 @@ Software Engineering
 ===
 Team XXX
 ===
-Dmitri Janis, Ingvar-Jõrgen Kurruk, Allan Tsakuhhin
+Dmitri Janis, Ingvar-Jörgen Kurruk, Allan Tsakuhhin
 ===
 
 <a href="https://github.com/Tsakuhhin/XXX/wiki">Wiki Home Page</a><br>
