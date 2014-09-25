@@ -1,7 +1,7 @@
 Software Engineering
 ===
-
-Team <br>
+Team XXX
+===
 Dmitri Janis, Ingvar-Jõrgen Kurruk, Allan Tsakuhhin
 ===
 
