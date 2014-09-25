@@ -1,6 +1,5 @@
-XXX
-
 Software Engineering
+===
 
 Team <br>
 Dmitri Janis, Ingvar-Jõrgen Kurruk, Allan Tsakuhhin
