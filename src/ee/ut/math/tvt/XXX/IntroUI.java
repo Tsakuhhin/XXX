@@ -21,9 +21,9 @@ public class IntroUI extends Application{
 		Label tLeader=new Label("Team leader: Allan Tsakuhhin");
 		String email=("allan.tsakuhhin@gmail.com");
 		Label tEmail= new Label("Team leader email: "+ email);
-		String members=("Allan Tsakuhhin,"+" Ingvar-Jörgen Kurruk,"+" Dmitri Janis");
+		String members=("Allan Tsakuhhin,"+" Ingvar-Jorgen Kurruk,"+" Dmitri Janis");
 		Label tMembers= new Label("Team members: "+ members);
-		Image img=new Image("http://www.seguinsheep.com/Triple_20X_1_.jpg");
+		Image img=new Image("file:xxx.jpg");
 		ImageView iv=new ImageView(img);
 		iv.setFitWidth(500);
 		iv.setFitHeight(200);
