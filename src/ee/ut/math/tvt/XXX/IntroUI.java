@@ -24,22 +24,20 @@ public class IntroUI extends Application {
 		launch(args);
 	}
 
-	public void start(Stage primaryStage) {
 
-		BorderPane bp = new BorderPane();
+	
+	public void start(Stage primaryStage){
+		BorderPane bp=new BorderPane();
+		GridPane gp=new GridPane();
+		Label tName=new Label("Team name: XXX");
+		Label tLeader=new Label("Team leader: Allan Tsakuhhin");
+		String email=("allan.tsakuhhin@gmail.com");
+		Label tEmail= new Label("Team leader email: "+ email);
+		String members=("Allan Tsakuhhin,"+" Ingvar-Jörgen Kurruk,"+" Dmitri Janis");
+		Label tMembers= new Label("Team members: "+ members);
+		Image img=new Image("file:images/xxx.jpg");
+		ImageView iv=new ImageView(img);
 
-		GridPane gp = new GridPane();
-		gp.setStyle("-fx-border-insets: 23; -fx-background-insets: 23;-fx-background-radius: 6;-fx-border-radius: 6;-fx-border-color: gray;-fx-border-style: solid;-fx-border-width: 1;-fx-effect: dropshadow(three-pass-box, rgba(100, 100, 100, 1), 24, 0.5, 0, 0);");
-		
-		Label tName = new Label("Team name: XXX");
-		Label tLeader = new Label("Team leader: Allan Tsakuhhin");
-		String email = ("allan.tsakuhhin@gmail.com");
-		Label tEmail = new Label("Team leader email: " + email);
-		String members = ("Allan Tsakuhhin," + " Ingvar-Jorgen Kurruk,"
-				+ " Dmitri Janis");
-		Label tMembers = new Label("Team members: " + members);
-		Image img = new Image("file:resources/xxx.jpg");
-		ImageView iv = new ImageView(img);
 		iv.setFitWidth(500);
 		iv.setFitHeight(120);
 		sfNr = (""); // get from file
