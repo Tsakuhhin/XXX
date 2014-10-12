@@ -28,8 +28,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class IntroUI extends Application {
+	
 	private String sfNr;
 	static Logger log = Logger.getLogger(IntroUI.class.getName());
+
+	private String buildNumber;
+
 
 	public static void main(String[] args) throws FileNotFoundException,
 			IOException {
@@ -39,12 +43,10 @@ public class IntroUI extends Application {
 		props.load(new FileInputStream("lib/log4j.properties"));
 		PropertyConfigurator.configure(props);
 		log.info("Launching IntroUI.");
-		
 		launch(args);
-
 	}
 
-	public void start(Stage primaryStage) throws IOException {
+	public void start(final Stage primaryStage) throws IOException {
 		BorderPane bp = new BorderPane();
 		GridPane gp = new GridPane();
 		gp.setStyle("-fx-border-insets: 23; -fx-background-insets: 23;-fx-background-radius: 6;-fx-border-radius: 6;-fx-border-color: gray;-fx-border-style: solid;-fx-border-width: 1;-fx-effect: dropshadow(three-pass-box, rgba(100, 100, 100, 1), 24, 0.5, 0, 0);");
@@ -54,10 +56,15 @@ public class IntroUI extends Application {
 		ImageView iv = new ImageView(img);
 		iv.setFitWidth(500);
 		iv.setFitHeight(120);
-
-		// get build.number from "version.properties"
-		sfNr = buildNumber();
-		Label sNr = new Label("Software version number: " + sfNr);
+		
+		// get  build.number from "version.properties"
+		buildNumber = buildNumber(); 
+		File file = new File("version.properties");
+		FileReader fileReader = new FileReader(file);
+		BufferedReader bufferedReader = new BufferedReader(fileReader);
+		StringBuffer stringBuffer = new StringBuffer();
+		
+		Label sNr = new Label("Software version number: " + buildNumber);
 		Button close = new Button("close");
 		close.setStyle("-fx-text-fill: #242d35;-fx-font-size: 10px;-fx-background-insets: 0 0 0 0,0,0;");
 
