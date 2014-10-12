@@ -1,17 +1,62 @@
-<?xml version="1.0" encoding="ASCII"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<project>
+<project name="XXX" default="current-number">
 
-    <target name="clean">
-        <delete dir="build"/>
-    </target>
+	<property file="version.properties"/>
+	<property name="build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
+	 <property name="src" location="src"/>
+	 <property name="build" location="build"/>
+	 <property name="dist"  location="dist"/>
 
-    <target name="compile">
-        <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes"/>
-    </target>
+	<target name="current-number">
+	 <echo>Software version:${build.number}</echo>
+	</target>
+	
+	<target name="compile">
+	   <antcall target="revision"></antcall>
+	<javac srcdir="." />
+	</target>
+	
+	<target name="dist">
+	  <antcall target="minor"></antcall>
+	</target>
+	
+	<target name="revision">
+	    <propertyfile  file="version.properties">
+	            <entry key="build.revision.number" type="int" operation="+" value="1" pattern="0"/>
+	    </propertyfile>
+	</target>
+	
+	<target name="minor">
+	    <propertyfile  file="version.properties">
+	            <entry key="build.minor.number" type="int" operation="+" value="1" pattern="0"/>
+	            <entry key="build.revision.number" type="int" value="0" pattern="0"/>
+	    </propertyfile>
+	</target>
 
-    <target name="jar">
+	<target name="major">
+	    <propertyfile  file="version.properties">
+	            <entry key="build.major.number" type="int" operation="+" value="1" pattern="0"/>
+	            <entry key="build.minor.number" type="int" value="0" pattern="0"/>
+	            <entry key="build.revision.number" type="int" value="0" pattern="0"/>
+	    </propertyfile>
+	</target>
+
+	<target name="all">
+	    <propertyfile  file="version.properties">
+	            <entry key="build.major.number" type="int" operation="+" value="1" pattern="0"/>
+	            <entry key="build.minor.number" type="int" operation="+" value="1" pattern="0"/>
+	            <entry key="build.revision.number" type="int" operation="+" value="1" pattern="0"/>
+	    </propertyfile>
+	</target>
+	
+	  <target name="clean" description="clean up" >
+	    <!-- Delete the ${build} and ${dist} directory trees -->
+	    <delete dir="${build}"/>
+	    <delete dir="${dist}"/>
+	  </target>
+
+    <target name="jar" depends="compile">
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/XXX.jar" basedir="build/classes">
             <manifest>

@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class IntroUI extends Application {
-	private String sfNr;
+	private String buildNumber;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -54,7 +54,7 @@ public class IntroUI extends Application {
 		iv.setFitHeight(120);
 		
 		// get  build.number from "version.properties"
-		sfNr = null; 
+		buildNumber = null; 
 		File file = new File("version.properties");
 		FileReader fileReader = new FileReader(file);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -73,11 +73,11 @@ public class IntroUI extends Application {
 			} else if (split[0].equalsIgnoreCase("build.major.number")) {
 				buildMajNum = split[1];
 			}
-			sfNr = buildMajNum + "." + buildMinNum + "." + buildRevNum;
+			buildNumber = buildMajNum + "." + buildMinNum + "." + buildRevNum;
 		}
-		fileReader.close();		
+		fileReader.close();
 		
-		Label sNr = new Label("Software version number: " + sfNr);
+		Label sNr = new Label("Software version number: " + buildNumber);
 		Button close = new Button("close");
 		close.setStyle("-fx-text-fill: #242d35;-fx-font-size: 10px;-fx-background-insets: 0 0 0 0,0,0;");
 
