@@ -15,7 +15,7 @@
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/XXX.jar" basedir="build/classes">
             <manifest>
-                <attribute name="Main-Class" value="ee.ut.math.tvt.XXX.XXX"/>
+                <attribute name="Main-Class" value="ee.ut.math.tvt.XX.XXX"/>
             </manifest>
         </jar>
     </target>
