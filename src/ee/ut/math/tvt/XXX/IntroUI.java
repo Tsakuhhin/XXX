@@ -59,11 +59,21 @@ public class IntroUI extends Application {
 		FileReader fileReader = new FileReader(file);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		StringBuffer stringBuffer = new StringBuffer();
+		
+		// get software version number parts
+		String buildRevNum = "";
+		String buildMinNum = "";
+		String buildMajNum = "";
 		while ((line = bufferedReader.readLine()) != null) {
 			String[] split = line.split("=");
-			if (split[0].equalsIgnoreCase("build.number")) {
-				sfNr = split[1];
+			if (split[0].equalsIgnoreCase("build.revision.number")) {
+				buildRevNum = split[1];
+			} else if (split[0].equalsIgnoreCase("build.minor.number")) {
+				buildMinNum = split[1];
+			} else if (split[0].equalsIgnoreCase("build.major.number")) {
+				buildMajNum = split[1];
 			}
+			sfNr = buildMajNum + "." + buildMinNum + "." + buildRevNum;
 		}
 		fileReader.close();		
 		
