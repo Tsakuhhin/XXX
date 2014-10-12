@@ -1,1 +1,27 @@
 <?xml version="1.0" encoding="ASCII"?>
+
+<project>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/XXX.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="ee.ut.math.tvt.XXX.XXX"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run">
+        <java jar="build/jar/XXX.jar" fork="true"/>
+    </target>
+
+</project>

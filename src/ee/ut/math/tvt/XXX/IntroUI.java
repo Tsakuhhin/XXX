@@ -27,7 +27,7 @@ public class IntroUI extends Application {
 		launch(args);
 	}
 
-	public void start(Stage primaryStage) throws IOException {
+	public void start(final Stage primaryStage) throws IOException {
 		BorderPane bp = new BorderPane();
 
 		GridPane gp = new GridPane();
