@@ -58,7 +58,7 @@
 
     <target name="jar" depends="compile">
         <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/XXX.jar" basedir="build/classes">
+        <jar destfile="build/jar/XXX.jar" basedir="${build/classes}">
             <manifest>
                 <attribute name="Main-Class" value="ee.ut.math.tvt.XXX"/>
             </manifest>
