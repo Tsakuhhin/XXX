@@ -56,11 +56,6 @@ public class IntroUI extends Application {
 		
 		// get  build.number from "version.properties"
 		sfNr = buildNumber(); 
-		File file = new File("version.properties");
-		FileReader fileReader = new FileReader(file);
-		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		StringBuffer stringBuffer = new StringBuffer();
-		
 		Label sNr = new Label("Software version number: " + sfNr);
 		Button close = new Button("close");
 		close.setStyle("-fx-text-fill: #242d35;-fx-font-size: 10px;-fx-background-insets: 0 0 0 0,0,0;");
@@ -89,26 +84,14 @@ public class IntroUI extends Application {
 
 	// get build nr
 	private String buildNumber() throws IOException {
-		String line = "";
-		String buildRevNum = "";
-		String buildMinNum = "";
-		String buildMajNum = "";
-		File file = new File("version.properties");
-		FileReader fileReader = new FileReader(file);
-		BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-		while ((line = bufferedReader.readLine()) != null) {
-			String[] split = line.split("=");
-			if (split[0].equalsIgnoreCase("build.revision.number")) {
-				buildRevNum = split[1];
-			} else if (split[0].equalsIgnoreCase("build.minor.number")) {
-				buildMinNum = split[1];
-			} else if (split[0].equalsIgnoreCase("build.major.number")) {
-				buildMajNum = split[1];
-			}
-			sfNr = buildMajNum + "." + buildMinNum + "." + buildRevNum;
-		}
-		fileReader.close();
+		FileReader reader = new FileReader("version.properties");
+		Properties properties=new Properties();
+		properties.load(reader);
+		String buildRevNum=properties.getProperty("build.revision.number");
+		String buildMinNum=properties.getProperty("build.minor.number");
+		String buildMajNum=properties.getProperty("build.major.number");
+		sfNr = buildMajNum + "." + buildMinNum + "." + buildRevNum;
+		reader.close();
 		return sfNr;
 	}
 
