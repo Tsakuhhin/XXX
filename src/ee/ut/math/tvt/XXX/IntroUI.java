@@ -43,7 +43,7 @@ public class IntroUI extends Application {
 		launch(args);
 	}
 
-	public void start(Stage primaryStage) throws IOException {
+	public void start(final Stage primaryStage) throws IOException {
 		BorderPane bp = new BorderPane();
 		GridPane gp = new GridPane();
 		gp.setStyle("-fx-border-insets: 23; -fx-background-insets: 23;-fx-background-radius: 6;-fx-border-radius: 6;-fx-border-color: gray;-fx-border-style: solid;-fx-border-width: 1;-fx-effect: dropshadow(three-pass-box, rgba(100, 100, 100, 1), 24, 0.5, 0, 0);");
