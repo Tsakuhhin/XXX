@@ -4,10 +4,27 @@
 
 	<property file="version.properties"/>
 	<property name="build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
-	 <property name="src" location="src"/>
-	 <property name="build" location="build"/>
-	 <property name="dist"  location="dist"/>
-
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="dist.dir" value="${basedir}/dist"/>
+	<property name="conf.dir" value="${basedir}/etc"/>
+	<property name="doc.dir" value="${build.dir}/doc"/>
+	<property name="test.reports.dir" value="${build.dir}/reports/"/>
+	
+	<path id="compile.classpath">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="test.classpath">
+		<pathelement location="${build.classes.dir}"/>
+		<!-- configuration -->
+		<pathelement location="${conf.dir}"/>
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
 	<target name="current-number">
 	 <echo>Software version:${build.number}</echo>
 	</target>
@@ -15,10 +32,6 @@
 	<target name="compile">
 	   <antcall target="revision"></antcall>
 	<javac srcdir="." />
-	</target>
-	
-	<target name="dist">
-	  <antcall target="minor"></antcall>
 	</target>
 	
 	<target name="revision">
@@ -49,12 +62,6 @@
 	            <entry key="build.revision.number" type="int" operation="+" value="1" pattern="0"/>
 	    </propertyfile>
 	</target>
-	
-	  <target name="clean" description="clean up" >
-	    <!-- Delete the ${build} and ${dist} directory trees -->
-	    <delete dir="${build}"/>
-	    <delete dir="${dist}"/>
-	  </target>
 
     <target name="jar" depends="compile">
         <mkdir dir="build/jar"/>
@@ -66,8 +73,33 @@
         </jar>
     </target>
 
-    <target name="run">
-        <java jar="build/jar/XXX.jar" fork="true"/>
-    </target>
+	<target name="run" 
+		description="Run the template application" 
+		depends="build">
+		<java fork="yes" 
+			classpathref="test.classpath" 
+			classname="ee.ut.math.tvt.salessystem.SalesSystem"/>
+	</target>
+	
+	<target name="build" description="Build the system">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+		<javac includeantruntime="false" 
+			source="1.8" 
+			target="1.8" 
+			compiler="modern" 
+			encoding="utf-8" 
+			debuglevel="lines,vars,source" 
+			debug="true" 
+			destdir="${build.classes.dir}" 
+			srcdir="${src.dir}">
+			<classpath refid="compile.classpath"/>
+		</javac>
+	</target>
+	
+	<target name="clean" description="clean up" >
+	   <!-- Delete the ${build} and ${dist} directory trees -->
+	   <delete dir="${build}"/>
+	</target>
 
 </project>
