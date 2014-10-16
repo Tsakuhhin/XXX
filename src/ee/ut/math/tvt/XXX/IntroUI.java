@@ -6,14 +6,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-
 import org.apache.log4j.PropertyConfigurator;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -32,18 +31,23 @@ public class IntroUI extends Application {
 	private String sfNr;
 	static Logger log = Logger.getLogger(IntroUI.class.getName());
 
-	public static void main(String[] args) throws FileNotFoundException,
-			IOException {
-		
-		// setup properties for log4j logger
-		Properties props = new Properties();
-		props.load(new FileInputStream("lib/log4j.properties"));
-		PropertyConfigurator.configure(props);
-		log.info("Launching IntroUI.");
-		launch(args);
+	public void setVisible(Boolean x){
+		if(x==true){
+			launch();
+		}
+		else{
+			Platform.exit();
+			System.out.println("false");
+		}
 	}
 
 	public void start(final Stage primaryStage) throws IOException {
+		// setup properties for log4j logger
+				Properties props = new Properties();
+				props.load(new FileInputStream("lib/log4j.properties"));
+				PropertyConfigurator.configure(props);
+				log.info("Launching IntroUI.");
+		
 		BorderPane bp = new BorderPane();
 		GridPane gp = new GridPane();
 		gp.setStyle("-fx-border-insets: 23; -fx-background-insets: 23;-fx-background-radius: 6;-fx-border-radius: 6;-fx-border-color: gray;-fx-border-style: solid;-fx-border-width: 1;-fx-effect: dropshadow(three-pass-box, rgba(100, 100, 100, 1), 24, 0.5, 0, 0);");
