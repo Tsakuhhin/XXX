@@ -4,11 +4,14 @@
 
 	<property file="version.properties"/>
 	<property name="build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
-	<property name="src.dir" value="${basedir}/src"/>
+	<property name="src" value="${basedir}/src"/>
 	<property name="dist.dir" value="${basedir}/dist"/>
 	<property name="conf.dir" value="${basedir}/etc"/>
 	<property name="doc.dir" value="${build.dir}/doc"/>
 	<property name="test.reports.dir" value="${build.dir}/reports/"/>
+	<property name="jar" value="build/jar"/>
+	<property name="build" value="${basedir}/build"/>
+	<property name="main-class"  value="XXX.Intro"/>
 	
 	<path id="compile.classpath">
 		<fileset dir="lib">
@@ -25,37 +28,34 @@
 		</fileset>
 	</path>
 	
-	<target name="current-number">
-	 <echo>Software version:${build.number}</echo>
-	</target>
 	
-	<target name="compile">
-	   <antcall target="revision"></antcall>
-	<javac srcdir="." />
-	</target>
-	
-	<target name="revision">
-	    <propertyfile  file="version.properties">
-	            <entry key="build.revision.number" type="int" operation="+" value="1" pattern="0"/>
-	    </propertyfile>
-	</target>
-	
-	<target name="minor">
-	    <propertyfile  file="version.properties">
-	            <entry key="build.minor.number" type="int" operation="+" value="1" pattern="0"/>
-	            <entry key="build.revision.number" type="int" value="0" pattern="0"/>
-	    </propertyfile>
+	<!-- Program version number -->
+	<target name="current-number" description="Shows program version number in console view">
+	 <echo>Software version: ${build.number}</echo>
 	</target>
 
-	<target name="major">
+	<target name="major" description="the first number of program version">
 	    <propertyfile  file="version.properties">
 	            <entry key="build.major.number" type="int" operation="+" value="1" pattern="0"/>
 	            <entry key="build.minor.number" type="int" value="0" pattern="0"/>
 	            <entry key="build.revision.number" type="int" value="0" pattern="0"/>
 	    </propertyfile>
 	</target>
+	
+	<target name="minor" description="the second number of program version">
+	    <propertyfile  file="version.properties">
+	            <entry key="build.minor.number" type="int" operation="+" value="1" pattern="0"/>
+	            <entry key="build.revision.number" type="int" value="0" pattern="0"/>
+	    </propertyfile>
+	</target>
+	
+	<target name="revision" description="the third number of program version">
+	    <propertyfile  file="version.properties">
+	            <entry key="build.revision.number" type="int" operation="+" value="1" pattern="0"/>
+	    </propertyfile>
+	</target>
 
-	<target name="all">
+	<target name="all" description="changes all software version numbers +1">
 	    <propertyfile  file="version.properties">
 	            <entry key="build.major.number" type="int" operation="+" value="1" pattern="0"/>
 	            <entry key="build.minor.number" type="int" operation="+" value="1" pattern="0"/>
@@ -63,27 +63,32 @@
 	    </propertyfile>
 	</target>
 
-    <target name="jar" depends="compile">
+	<!-- Compiling source code -->
+	<target name="compile">
+		<!--><antcall target="revision"></antcall><-->
+		<javac srcdir="${src}"/>
+	</target>
+	
+	<target name="run" description="executes your application via class Intro" depends="jar">
+		<java fork="yes" 
+			classname="src/ee/ut/math/tvt/XXX/Intro"/>
+			<java jar="build/jar/XXX.jar" fork="true"/>
+	</target>
+	<!-->classpathref="test.classpath"<-->
+	
+    <target name="jar">
         <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/XXX.jar" basedir="${build/classes}">
+        <jar destfile="build/jar/XXX.jar" basedir="build/classes">
             <manifest>
-                <attribute name="Main-Class" value="ee.ut.math.tvt.XX.XXX"/>
-                <attribute name="Main-Class" value="ee.ut.math.tvt.XXX"/>
+                <attribute name="Main-Class" value="${main-class}"/>
             </manifest>
         </jar>
     </target>
 
-	<target name="run" 
-		description="Run the template application" 
-		depends="build">
-		<java fork="yes" 
-			classpathref="test.classpath" 
-			classname="ee.ut.math.tvt.salessystem.SalesSystem"/>
-	</target>
 	
 	<target name="build" description="Build the system">
-		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="build"/>
+		<mkdir dir="build/classes"/>
 		<javac includeantruntime="false" 
 			source="1.8" 
 			target="1.8" 
@@ -91,14 +96,13 @@
 			encoding="utf-8" 
 			debuglevel="lines,vars,source" 
 			debug="true" 
-			destdir="${build.classes.dir}" 
-			srcdir="${src.dir}">
+			destdir="build/classes" 
+			srcdir="${src}">
 			<classpath refid="compile.classpath"/>
 		</javac>
 	</target>
 	
-	<target name="clean" description="clean up" >
-	   <!-- Delete the ${build} and ${dist} directory trees -->
+	<target name="clean" description="removing the files created during the previous build">
 	   <delete dir="${build}"/>
 	</target>
 
