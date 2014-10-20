@@ -11,16 +11,18 @@
 	<property name="test.reports.dir" value="${build.dir}/reports/"/>
 	<property name="jar" value="build/jar"/>
 	<property name="build" value="${basedir}/build"/>
-	<property name="main-class"  value="Intro"/>
+	<property name="main-class"  value="ee.ut.math.tvt.XXX.Intro"/>
 	
-	<path id="compile.classpath">
-		<fileset dir="lib">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
+    <path id="compile.classpath">
+        <fileset dir="${basedir}/lib" includes="**/*.jar"/>
+    </path>
+	
+    <path id="classpath">
+        <fileset dir="${basedir}/lib" includes="**/*.jar"/>
+    </path>
 	
 	<path id="test.classpath">
-		<pathelement location="${build.classes.dir}"/>
+		<pathelement location="build/classes"/>
 		<!-- configuration -->
 		<pathelement location="${conf.dir}"/>
 		<fileset dir="lib">
@@ -69,14 +71,19 @@
 		<javac srcdir="${src}"/>
 	</target>
 	
-	<target name="run" description="executes your application via class Intro" depends="dist">
-		<java jar="${jar}/XXX.jar" fork="true"/>
-	</target>
+    <target name="run" description="executes your application via class Intro">
+        <java fork="true" classname="${main-class}">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="${build}/jar/XXX.jar"/>
+            </classpath>
+        </java>
+    </target>
 	<!-->classpathref="test.classpath"<-->
 	
-    <target name="dist" description="creates in the folder build/jar a separate JAR file">
+    <target name="dist" description="creates in the folder build/jar a separate JAR file" depends="revision">
         <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/XXX.jar" basedir="build/classes">
+        <jar destfile="build/jar/XXX.jar" basedir="${build}/classes">
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
             </manifest>
