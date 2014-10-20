@@ -11,7 +11,7 @@
 	<property name="test.reports.dir" value="${build.dir}/reports/"/>
 	<property name="jar" value="build/jar"/>
 	<property name="build" value="${basedir}/build"/>
-	<property name="main-class"  value="XXX.Intro"/>
+	<property name="main-class"  value="Intro"/>
 	
 	<path id="compile.classpath">
 		<fileset dir="lib">
@@ -69,14 +69,12 @@
 		<javac srcdir="${src}"/>
 	</target>
 	
-	<target name="run" description="executes your application via class Intro" depends="jar">
-		<java fork="yes" 
-			classname="src/ee/ut/math/tvt/XXX/Intro"/>
-			<java jar="build/jar/XXX.jar" fork="true"/>
+	<target name="run" description="executes your application via class Intro" depends="dist">
+		<java jar="${jar}/XXX.jar" fork="true"/>
 	</target>
 	<!-->classpathref="test.classpath"<-->
 	
-    <target name="jar">
+    <target name="dist" description="creates in the folder build/jar a separate JAR file">
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/XXX.jar" basedir="build/classes">
             <manifest>
@@ -85,6 +83,9 @@
         </jar>
     </target>
 
+	<target name="jrun" description="opens your intro window using the JAR file created by your dist ANT target" depends="dist">
+		<java jar="${jar}/XXX.jar" fork="true"/>
+	</target>
 	
 	<target name="build" description="Build the system">
 		<mkdir dir="build"/>
