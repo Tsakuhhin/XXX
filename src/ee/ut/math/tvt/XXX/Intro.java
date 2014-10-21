@@ -1,10 +1,11 @@
 package ee.ut.math.tvt.XXX;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
-
 import ee.ut.math.tvt.salessystem.ui.ConsoleUI;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 
@@ -13,7 +14,7 @@ public class Intro {
 private static final Logger log = Logger.getLogger(Intro.class);
 private static final String MODE = "console";
 
-public static void main(String[] args) {
+public static void main(String[] args) throws IOException {
 
 	final SalesDomainController domainController = new SalesDomainControllerImpl();
 	
@@ -26,16 +27,16 @@ public static void main(String[] args) {
 		cui.run();
 	} else {
 
-		IntroUI introUI = new IntroUI();
+		IntroUI introUI = new IntroUI("IntroUI");
 		introUI.setVisible(true);
-		//introUI.setAlwaysOnTop(true);
+		introUI.setAlwaysOnTop(true);
 
 		final SalesSystemUI ui = new SalesSystemUI(domainController);
 		ui.setVisible(true);
 
-		//introUI.setAlwaysOnTop(false);
+		introUI.setAlwaysOnTop(false);
 		try {
-			Thread.sleep(500);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
