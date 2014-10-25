@@ -42,7 +42,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		dataset.add(chupaChups);
 		dataset.add(frankfurters);
 		dataset.add(beer);
-		
+
 		return dataset;
 	}
 }

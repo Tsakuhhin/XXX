@@ -1,8 +1,10 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -10,9 +12,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.regex.Pattern;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +40,7 @@ public class PurchaseItemPanel extends JPanel {
     private JTextField quantityField;
     private JTextField nameField;
     private JTextField priceField;
+    private JComboBox ProductList;
 
     private JButton addItemButton;
 
@@ -78,7 +87,7 @@ public class PurchaseItemPanel extends JPanel {
 
         // Create the panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        panel.setLayout(new GridLayout(6, 2));
         panel.setBorder(BorderFactory.createTitledBorder("Product"));
 
         // Initialize the textfields
@@ -86,6 +95,7 @@ public class PurchaseItemPanel extends JPanel {
         quantityField = new JTextField("1");
         nameField = new JTextField();
         priceField = new JTextField();
+        
 
         // Fill the dialog fields if the bar code text field loses focus
         barCodeField.addFocusListener(new FocusListener() {
@@ -101,7 +111,38 @@ public class PurchaseItemPanel extends JPanel {
         priceField.setEditable(false);
 
         // == Add components to the panel
-
+        
+        panel.add(new JLabel(""));
+        ArrayList arrProducts = new ArrayList();
+        SalesDomainControllerImpl ProductsList = new SalesDomainControllerImpl();
+        List<StockItem> List = ProductsList.loadWarehouseState();
+        arrProducts.add(" ");
+        String[] ProductData;
+        for (int i = 0; i < List.size(); i++) {
+    		String[] arrProduct = List.get(i).toString().split(" ");
+    		String ProductName = null;
+    		StringBuilder stringBuilder = new StringBuilder();
+    		for (int j = 0; j < arrProduct.length; j++) {
+    			String decimalPattern = "([0-9]*)\\.([0-9]*)";
+    			if (isNumber(arrProduct[j]) == false && !Pattern.matches(decimalPattern, arrProduct[j])) {
+    				stringBuilder.append(arrProduct[j] + " ");
+    				ProductName = stringBuilder.toString();
+    			}
+    		}
+    		arrProducts.add(ProductName);
+    	}
+        Object[] a = arrProducts.toArray(new String[arrProducts.size()]);
+        ProductList = new JComboBox(a);
+        panel.add(ProductList);
+        ProductList.setEnabled(false);
+        
+        // jcombobox value
+        ProductList.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+            	String selectedProduct = String.valueOf(ProductList.getSelectedItem());
+            }
+        });
+		
         // - bar code
         panel.add(new JLabel("Bar code:"));
         panel.add(barCodeField);
@@ -113,7 +154,7 @@ public class PurchaseItemPanel extends JPanel {
         // - name
         panel.add(new JLabel("Name:"));
         panel.add(nameField);
-
+        
         // - price
         panel.add(new JLabel("Price:"));
         panel.add(priceField);
@@ -193,7 +234,9 @@ public class PurchaseItemPanel extends JPanel {
         quantityField.setText("1");
         nameField.setText("");
         priceField.setText("");
+        ProductList.setEnabled(true);
     }
+
 
     /*
      * === Ideally, UI's layout and behavior should be kept as separated as
@@ -242,6 +285,15 @@ public class PurchaseItemPanel extends JPanel {
         gc.weighty = 1.0;
 
         return gc;
+    }
+    
+    public static boolean isNumber(String string) {
+        try {
+            Long.parseLong(string);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 }
