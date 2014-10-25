@@ -129,7 +129,7 @@
 
 	<target name="git_commit" description="commit and puh to GitHub server">
 		<input message="Commit message" addproperty="message"> </input>
-		<echo message="Committing all changes... ${message}"/>
+		<echo message="Committing... ${message}"/>
 		<git command="add">
 			<args>
 				<arg value="${basedir}" />
@@ -137,7 +137,7 @@
 		</git>
 		<git command="commit">
 			<args>
-				<arg value="-am ${commit-message}" />
+				<arg value="-am ${message}" />
 			</args>
 		</git>
 		<input message="Enter user name:" addproperty="username"/>
