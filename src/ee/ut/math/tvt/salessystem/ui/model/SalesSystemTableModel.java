@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import ee.ut.math.tvt.salessystem.domain.data.DisplayableItem;
@@ -72,6 +73,5 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
         rows.clear();
         rows.addAll(data);
     }
-    
     
 }

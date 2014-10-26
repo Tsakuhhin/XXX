@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
@@ -40,6 +42,25 @@ public class SalesSystemModel {
 
     public PurchaseInfoTableModel getCurrentPurchaseTableModel() {
         return currentPurchaseTableModel;
+    }
+    
+    public boolean checkAmount(PurchaseInfoTableModel purchaseInfoTableModel, Long id, int quantity, int addedquantity) {
+    	int Quantity = 0;
+    	int nRow = purchaseInfoTableModel.getRowCount(), nCol = purchaseInfoTableModel.getColumnCount();
+        Object[][] tableData = new Object[nRow][nCol];
+        for (int i = 0 ; i < nRow ; i++) {
+            if(id == purchaseInfoTableModel.getValueAt(i,0)) {	
+            	Quantity += (int) purchaseInfoTableModel.getValueAt(i,3);
+            }
+        }
+        Quantity += addedquantity;
+        
+        if (quantity < Quantity) {
+        	JOptionPane.showMessageDialog(null, "The amount is exceeded!");
+        	return false;
+        }
+        
+    	return true;
     }
     
 }

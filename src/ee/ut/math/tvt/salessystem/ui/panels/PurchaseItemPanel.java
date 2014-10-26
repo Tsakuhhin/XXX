@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.ui.panels;
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 import java.awt.GridBagConstraints;
@@ -23,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -208,10 +210,16 @@ public class PurchaseItemPanel extends JPanel {
             } catch (NumberFormatException ex) {
                 quantity = 1;
             }
-           model.getCurrentPurchaseTableModel()
-                .addItem(new SoldItem(stockItem, quantity));
+           if (stockItem.getQuantity() < quantity) {
+        	   JOptionPane.showMessageDialog(null, "The amount is too large!");
+           } else if (model.checkAmount(model.getCurrentPurchaseTableModel(), stockItem.getId(), stockItem.getQuantity(), quantity)) {
+        	   model.getCurrentPurchaseTableModel()
+           			.addItem(new SoldItem(stockItem, quantity));
+           }
         }
     }
+    
+    
 
     /**
      * Sets whether or not this component is enabled.
@@ -283,14 +291,4 @@ public class PurchaseItemPanel extends JPanel {
 
         return gc;
     }
-    
-    public static boolean isNumber(String string) {
-        try {
-            Long.parseLong(string);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
 }
