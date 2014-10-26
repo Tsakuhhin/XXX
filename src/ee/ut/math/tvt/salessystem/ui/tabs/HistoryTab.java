@@ -3,22 +3,12 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
