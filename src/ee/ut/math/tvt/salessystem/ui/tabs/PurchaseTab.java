@@ -1,18 +1,24 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -166,7 +172,13 @@ public class PurchaseTab {
   /** Event handler for the <code>submit purchase</code> event. */
   protected void submitPurchaseButtonClicked() {
     log.info("Sale complete");
-    try {
+    
+    if(startPayment(model.getCurrentPurchaseTableModel().getTableRows())) {
+    	endSale();
+    	model.getCurrentPurchaseTableModel().clear();
+    }
+        
+    /*try {
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
       domainController.submitCurrentPurchase(
           model.getCurrentPurchaseTableModel().getTableRows()
@@ -175,12 +187,34 @@ public class PurchaseTab {
       model.getCurrentPurchaseTableModel().clear();
     } catch (VerificationFailedException e1) {
       log.error(e1.getMessage());
-    }
+    }*/
+  }
+  
+  public boolean startPayment(List<SoldItem> list) {
+	  StringBuffer invoice = new StringBuffer("");
+	  double sum = 0;
+	  double toReturn = 0;
+	  for (int i = 0; i < list.size(); i++) {
+		  invoice.append(list.get(i).toString() + "\n");
+		  sum += list.get(i).getSum();
+	  }	  
+	  invoice.append("\n\nTotal sum: " + sum);
+	  String paid = (String)JOptionPane.showInputDialog(
+	                      null,
+	                      invoice);
+	  if ((paid != null) && (paid.length() > 0)) {
+		  toReturn = Double.parseDouble(paid) - sum;
+		  if (toReturn > 0) {
+			  JOptionPane.showMessageDialog(null,
+				    "Change amount:" + toReturn);
+		  }
+		  return true;
+	  }
+	  return false;
   }
 
 
-
-  /* === Helper methods that bring the whole purchase-tab to a certain state
+/* === Helper methods that bring the whole purchase-tab to a certain state
    *     when called.
    */
 

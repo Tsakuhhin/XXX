@@ -68,4 +68,8 @@ public class SoldItem implements Cloneable, DisplayableItem {
         this.stockItem = stockItem;
     }
     
+    public String toString() {
+        return id + " " + name + " " + quantity + " " + price;
+    }
+    
 }
