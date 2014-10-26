@@ -77,7 +77,7 @@ public class HistoryTab{
         		   JTable table2 = new JTable( arrValues, columns);
         		   JFrame frame = new JFrame("Invoice");
         		   frame.add(new JScrollPane(table2));
-        		   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        		   frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
         		   frame.pack();
         		   frame.setVisible(true);
         		   
