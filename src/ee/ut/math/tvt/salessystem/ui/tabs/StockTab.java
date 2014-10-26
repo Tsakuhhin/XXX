@@ -1,15 +1,26 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.JTableHeader;
 
 
@@ -59,12 +70,93 @@ public class StockTab {
     gc.weightx = 0;
 
     addItem = new JButton("Add");
+    addItem.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+        	newItemDialog();
+        }
+      });
     gc.gridwidth = GridBagConstraints.RELATIVE;
     gc.weightx = 1.0;
     panel.add(addItem, gc);
 
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     return panel;
+  }
+  
+  private void newItemDialog() {
+	  JFrame frame = new JFrame("New item");
+  	frame.setLayout(new GridLayout(7, 2));
+  	
+  	JTextField idInput = new JTextField(15);
+  	frame.add(new JLabel("Id"));
+  	frame.add(idInput);
+  	StockTableModel modelw = model.getWarehouseTableModel();
+  	int row = modelw.getRowCount();
+	int column = modelw.getColumnCount();
+	Object lastid = null;
+	for(int i=1;i<row;i++)
+    {
+        for(int j=0;j<column;j++)
+        {                 ;
+            if (i == row - 1) {
+            	lastid = modelw.getValueAt(i, 0);
+            }
+        }
+    }
+  	idInput.setText(Long.toString(Long.parseLong(lastid.toString()) + 1).toString());
+  	idInput.setEditable(false);
+  	
+  	JTextField nameInput = new JTextField(15);
+  	frame.add(new JLabel("Name"));
+  	frame.add(nameInput);
+  	
+  	JTextField descInput = new JTextField(15);
+  	frame.add(new JLabel("Description"));
+  	frame.add(descInput);
+  	
+  	JTextField priceInput = new JTextField(15);
+  	frame.add(new JLabel("Price"));
+  	frame.add(priceInput);
+  	
+  	JTextField quantityInput = new JTextField(15);
+  	frame.add(new JLabel("Quantity"));
+  	frame.add(quantityInput);
+    
+    addItem = new JButton("Add");
+    addItem.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+        	boolean result = true;
+        	
+        	try {
+                Long.parseLong(idInput.getText());
+            } catch (Exception ex) {
+            	result = false;
+            }
+        	try {
+        		Double.parseDouble(priceInput.getText());
+            } catch (Exception ex) {
+            	result = false;
+            }
+        	try {
+        		Integer.parseInt(quantityInput.getText());
+            } catch (Exception ex) {
+            	result = false;
+            }
+        	
+        	if (result) {
+        		StockItem item =
+        	            new StockItem(Long.parseLong(idInput.getText(), 10), nameInput.getText(), descInput.getText(), Double.parseDouble(priceInput.getText()), Integer.parseInt(quantityInput.getText()));
+        		StockTableModel modelw = model.getWarehouseTableModel();
+        		modelw.addItem(item);
+        	}
+        }
+    });
+    frame.add(addItem);
+    
+   frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
+   frame.pack();
+   frame.setVisible(true);
+	  
   }
 
 
