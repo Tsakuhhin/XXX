@@ -119,17 +119,7 @@ public class PurchaseItemPanel extends JPanel {
         arrProducts.add(" ");
         String[] ProductData;
         for (int i = 0; i < List.size(); i++) {
-    		String[] arrProduct = List.get(i).toString().split(" ");
-    		String ProductName = null;
-    		StringBuilder stringBuilder = new StringBuilder();
-    		for (int j = 0; j < arrProduct.length; j++) {
-    			String decimalPattern = "([0-9]*)\\.([0-9]*)";
-    			if (isNumber(arrProduct[j]) == false && !Pattern.matches(decimalPattern, arrProduct[j])) {
-    				stringBuilder.append(arrProduct[j] + " ");
-    				ProductName = stringBuilder.toString();
-    			}
-    		}
-    		arrProducts.add(ProductName);
+    		arrProducts.add(List.get(i).getName());	
     	}
         Object[] a = arrProducts.toArray(new String[arrProducts.size()]);
         ProductList = new JComboBox(a);
@@ -140,6 +130,13 @@ public class PurchaseItemPanel extends JPanel {
         ProductList.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
             	String selectedProduct = String.valueOf(ProductList.getSelectedItem());
+            	for (int i = 0; i < List.size(); i++) {
+            		if(List.get(i).getName() == selectedProduct) {
+        				barCodeField.setText(List.get(i).getId().toString());
+        				nameField.setText(List.get(i).getName().toString());
+        				priceField.setText(String.valueOf(List.get(i).getPrice()));
+            		}
+            	}
             }
         });
 		

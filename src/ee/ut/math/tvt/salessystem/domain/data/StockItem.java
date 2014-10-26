@@ -86,6 +86,7 @@ public class StockItem implements Cloneable, DisplayableItem {
     public String toString() {
         return id + " " + name + " " + description + " " + price;
     }
+    
 
     /**
      * Method for querying the value of a certain column when StockItems are shown
