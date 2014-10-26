@@ -106,7 +106,7 @@ public class PurchaseItemPanel extends JPanel {
                 fillDialogFields();
             }
         });
-
+        barCodeField.setEditable(false);
         nameField.setEditable(false);
         priceField.setEditable(false);
 
@@ -208,7 +208,7 @@ public class PurchaseItemPanel extends JPanel {
             } catch (NumberFormatException ex) {
                 quantity = 1;
             }
-            model.getCurrentPurchaseTableModel()
+           model.getCurrentPurchaseTableModel()
                 .addItem(new SoldItem(stockItem, quantity));
         }
     }
