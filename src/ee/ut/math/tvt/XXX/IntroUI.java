@@ -61,19 +61,19 @@ public class IntroUI extends JFrame {
 
 		// team leader
 		String teamLeader = introData("Leader");
-		leaderLabel = new JLabel("Team name: " + teamLeader);
+		leaderLabel = new JLabel("Team leader: " + teamLeader);
 		leaderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(leaderLabel);
 
 		// team leader email
 		String teamLeaderE = introData("LeaderEmail");
-		leaderELabel = new JLabel("Team name: " + teamLeaderE);
+		leaderELabel = new JLabel("Team leader email: " + teamLeaderE);
 		leaderELabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(leaderELabel);
 
 		// Members
 		String members = introData("Members");
-		membersLabel = new JLabel("Team name: " + members);
+		membersLabel = new JLabel("Team members: " + members);
 		membersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(membersLabel);
 
