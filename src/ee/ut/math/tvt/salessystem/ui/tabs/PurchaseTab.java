@@ -1,8 +1,10 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
@@ -174,20 +176,17 @@ public class PurchaseTab {
     log.info("Sale complete");
     
     if(startPayment(model.getCurrentPurchaseTableModel().getTableRows())) {
-    	endSale();
-    	model.getCurrentPurchaseTableModel().clear();
+    	 try {
+    	      log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
+    	      domainController.submitCurrentPurchase(
+    	          model.getCurrentPurchaseTableModel().getTableRows()
+    	      );
+    	      endSale();
+    	      model.getCurrentPurchaseTableModel().clear();
+    	    } catch (VerificationFailedException e1) {
+    	      log.error(e1.getMessage());
+    	    }
     }
-        
-    /*try {
-      log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
-      domainController.submitCurrentPurchase(
-          model.getCurrentPurchaseTableModel().getTableRows()
-      );
-      endSale();
-      model.getCurrentPurchaseTableModel().clear();
-    } catch (VerificationFailedException e1) {
-      log.error(e1.getMessage());
-    }*/
   }
   
   public boolean startPayment(List<SoldItem> list) {
@@ -197,13 +196,15 @@ public class PurchaseTab {
 	  for (int i = 0; i < list.size(); i++) {
 		  invoice.append(list.get(i).toString() + "\n");
 		  sum += list.get(i).getSum();
-	  }	  
+	  }	 
+	  
 	  invoice.append("\n\nTotal sum: " + sum);
 	  String paid = (String)JOptionPane.showInputDialog(
 	                      null,
 	                      invoice);
 	  if ((paid != null) && (paid.length() > 0)) {
 		  toReturn = Double.parseDouble(paid) - sum;
+		  // TODO decrease ammount
 		  if (toReturn > 0) {
 			  JOptionPane.showMessageDialog(null,
 				    "Change amount:" + toReturn);

@@ -1,12 +1,16 @@
 package ee.ut.math.tvt.salessystem.domain.controller.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
 
 /**
  * Implementation of the sales domain controller.
@@ -16,8 +20,14 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	public void submitCurrentPurchase(List<SoldItem> goods) throws VerificationFailedException {
 		// Let's assume we have checked and found out that the buyer is underaged and
 		// cannot buy chupa-chups
-		throw new VerificationFailedException("Underaged!");
+		//throw new VerificationFailedException("Underaged!");
 		// XXX - Save purchase
+		double sum = 0;
+		for (int i = 0; i < goods.size(); i++) {
+			  sum += goods.get(i).getSum();
+		  }	
+		HistoryTab.model.addRow(new Object[]{getCurrentDateOrTime("date"), getCurrentDateOrTime("time"), sum});
+		HistoryTab.model.fireTableDataChanged();	
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {				
@@ -44,5 +54,20 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		dataset.add(beer);
 
 		return dataset;
+	};
+	
+	public String getCurrentDateOrTime(String type) {
+		String strDate = "";
+		if (type == "date") {
+			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+			Date date = new Date();
+			strDate = dateFormat.format(date);
+		} else {
+			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+			Date date = new Date();
+			strDate = dateFormat.format(date);
+		}
+		
+		return strDate;
 	}
 }
