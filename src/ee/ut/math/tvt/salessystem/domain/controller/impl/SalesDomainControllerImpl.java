@@ -23,10 +23,17 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		//throw new VerificationFailedException("Underaged!");
 		// XXX - Save purchase
 		double sum = 0;
+		Object[][] data = new Object[goods.size()][5];
 		for (int i = 0; i < goods.size(); i++) {
-			  sum += goods.get(i).getSum();
-		  }	
-		HistoryTab.model.addRow(new Object[]{getCurrentDateOrTime("date"), getCurrentDateOrTime("time"), sum});
+			  sum += goods.get(i).getSum(); 
+		      data[i][0] = goods.get(i).getId();
+		      data[i][1] = goods.get(i).getName();
+		      data[i][2] = goods.get(i).getPrice();
+		      data[i][3] = goods.get(i).getQuantity();
+		      data[i][4] = goods.get(i).getSum();
+		 }	
+
+		HistoryTab.model.addRow(new Object[]{getCurrentDateOrTime("date"), getCurrentDateOrTime("time"), sum, data});
 		HistoryTab.model.fireTableDataChanged();	
 	}
 
