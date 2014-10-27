@@ -87,7 +87,7 @@ public class StockTab {
 	  JFrame frame = new JFrame("New item");
   	frame.setLayout(new GridLayout(7, 2));
   	
-  	JTextField idInput = new JTextField(15);
+  	final JTextField idInput = new JTextField(15);
   	frame.add(new JLabel("Id"));
   	frame.add(idInput);
   	StockTableModel modelw = model.getWarehouseTableModel();
@@ -106,19 +106,19 @@ public class StockTab {
   	idInput.setText(Long.toString(Long.parseLong(lastid.toString()) + 1).toString());
   	idInput.setEditable(false);
   	
-  	JTextField nameInput = new JTextField(15);
+  	final JTextField nameInput = new JTextField(15);
   	frame.add(new JLabel("Name"));
   	frame.add(nameInput);
   	
-  	JTextField descInput = new JTextField(15);
+  	final JTextField descInput = new JTextField(15);
   	frame.add(new JLabel("Description"));
   	frame.add(descInput);
   	
-  	JTextField priceInput = new JTextField(15);
+  	final JTextField priceInput = new JTextField(15);
   	frame.add(new JLabel("Price"));
   	frame.add(priceInput);
   	
-  	JTextField quantityInput = new JTextField(15);
+  	final JTextField quantityInput = new JTextField(15);
   	frame.add(new JLabel("Quantity"));
   	frame.add(quantityInput);
     

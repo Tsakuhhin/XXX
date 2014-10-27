@@ -117,7 +117,7 @@ public class PurchaseItemPanel extends JPanel {
         panel.add(new JLabel(""));
         ArrayList arrProducts = new ArrayList();
         SalesDomainControllerImpl ProductsList = new SalesDomainControllerImpl();
-        List<StockItem> List = ProductsList.loadWarehouseState();
+        final List<StockItem> List = ProductsList.loadWarehouseState();
         arrProducts.add(" ");
         String[] ProductData;
         for (int i = 0; i < List.size(); i++) {
