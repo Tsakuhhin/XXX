@@ -176,15 +176,24 @@
 		<input message="Enter Tag comment (Homework x):" addproperty="comment"></input> 
 		
 		<echo message="Executing git tag -a ${name} -m '${comment}'" />
+		
 		<exec executable="git" failonerror="true">
 		    <arg line="tag -a ${name} -m '${comment}'" />
 		</exec>
 
+		<git command="tag">
+			<args>
+				<arg value="-f"/>
+					<arg value="${name}"/>
+			</args>
+		</git>
+		<input message="Enter user name:" addproperty="username"/>
+		<input message="Enter password:" addproperty="password"/>
 		<git command="push">
 			<args>
-				<arg value="--tags"/>
+				<arg value="-f"/>
 				<arg value="https://${username}:${password}@github.com/${username}/XXX/"/>
-				<arg value="master"/>
+				<arg value="${name}"/>
 			</args>
 		</git>
 	</target>
