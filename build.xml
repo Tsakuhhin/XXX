@@ -183,6 +183,8 @@
 		<git command="push">
 			<args>
 				<arg value="--tags"/>
+				<arg value="https://${username}:${password}@github.com/${username}/XXX/"/>
+				<arg value="master"/>
 			</args>
 		</git>
 	</target>
