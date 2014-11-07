@@ -4,15 +4,18 @@
 
 	<property file="version.properties"/>
 	<property name="build.number" 		value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
-	<property name="src" 				value="${basedir}/src"/>
+	<property name="src.dir" 				value="${basedir}/src"/>
 	<property name="dist.dir" 			value="${basedir}/dist"/>
 	<property name="conf.dir" 			value="${basedir}/etc"/>
 	<property name="doc.dir" 			value="${build.dir}/doc"/>
 	<property name="test.reports.dir" 	value="${build.dir}/reports/"/>
-	<property name="jar" 				value="build/jar"/>
-	<property name="build" 				value="${basedir}/build"/>
+	<property name="jar.dir" 				value="build/jar"/>
+	<property name="build.dir" 				value="${basedir}/build"/>
 	<property name="main-class"  		value="ee.ut.math.tvt.XXX.Intro"/>
+	
 	<property name="lib.dir" 			value="${basedir}/lib"/>
+	
+	<!-- database variables -->
 	<property name="data.dir"			value="${basedir}/data"/>
 	<property name="db.file"			value="${data.dir}/POSdb"/>
 	<property name="db.alias"			value="POS"/>
@@ -20,14 +23,17 @@
 	<property name="lib.hibernate.dir"  value="${lib.dir}/hibernate"/>
 	
     <path id="compile.classpath">
-        <fileset dir="${basedir}/lib" includes="**/*.jar"/>
+    	<fileset dir="${lib.dir}">
+    		<include name="*.jar"/>
+    	</fileset>
+    	
     	<fileset dir="${lib.hibernate.dir}">
     		<include name="*.jar"/>
     	</fileset>
     </path>
 	
     <path id="classpath">
-        <fileset dir="${basedir}/lib" includes="**/*.jar"/>
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
     </path>
 	
 	<path id="run.classpath">
@@ -47,7 +53,7 @@
 		<pathelement location="build/classes"/>
 		<!-- configuration -->
 		<pathelement location="${conf.dir}"/>
-		<fileset dir="lib">
+		<fileset dir="${lib.dir}">
 			<include name="*.jar"/>
 		</fileset>
 	</path>
@@ -117,7 +123,7 @@
 	</target>
 	
 	<target name="build" description="Build the system">
-		<mkdir dir="build"/>
+		<mkdir dir="${build.dir}"/>
 		<mkdir dir="build/classes"/>
 		<javac includeantruntime="false" 
 			source="1.8" 
@@ -133,7 +139,7 @@
 	</target>
 	
 	<target name="clean" description="removing the files created during the previous build">
-	   <delete dir="${build}"/>
+	   <delete dir="${build.dir}"/>
 	</target>
 	
 	<macrodef name="git">
@@ -198,6 +204,14 @@
 		</git>
 	</target>
 	
+	 <target name="startdb" description="Start the HSQLDB with the default params">
+	 	<java
+	        classname="org.hsqldb.Server" classpathref="run.classpath"
+	        fork="yes">
+	        <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
+	   </java>
+	</target>
+	
 	<target name="dbmanager" description="Start the HSQLDB manager">
 		<java
 			classname="org.hsqldb.util.DatabaseManagerSwing"
@@ -206,14 +220,5 @@
 			<arg line="--user sa --url ${db.url}" />
 	    </java>
 	 </target>
-
-	 <target name="startdb" description="Start the HSQLDB with the default params">
-	 	<java
-	        classname="org.hsqldb.Server"
-	        classpathref="run.classpath"
-	        fork="yes">
-	        <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
-	   </java>
-	</target>
 	
 </project>
