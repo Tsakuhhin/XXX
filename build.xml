@@ -219,7 +219,23 @@
 	 		 password=""
              src="data/POSdbData.script">  
             <classpath refid="run.classpath"/>
-        </sql> 
+        </sql>
+	 	<sql driver="${db.driver}"
+             url="${db.url}"
+             onerror="continue"
+	 		 userid="sa"
+	 		 password=""
+             src="data/POSdbData.script">  
+            <classpath refid="run.classpath"/>
+        </sql>
+	 	<sql driver="${db.driver}"
+             url="${db.url}"
+             onerror="continue"
+	 		 userid="sa"
+	 		 password=""
+             src="data/POSdbSoldItemData.script">  
+            <classpath refid="run.classpath"/>
+        </sql>
 	 	
 	</target>
 	
