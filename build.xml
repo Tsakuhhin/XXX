@@ -16,8 +16,10 @@
 	<property name="lib.dir" 			value="${basedir}/lib"/>
 	
 	<!-- database variables -->
+	<property name="db.driver"			value="org.hsqldb.jdbcDriver"/>
 	<property name="data.dir"			value="${basedir}/data"/>
 	<property name="db.file"			value="${data.dir}/POSdb"/>
+	<property name="db.data.file"		value="${data.dir}/POSdbData"/>
 	<property name="db.alias"			value="POS"/>
 	<property name="db.url" 			value="jdbc:hsqldb:hsql://localhost/POS"/>
 	<property name="lib.hibernate.dir"  value="${lib.dir}/hibernate"/>
@@ -210,6 +212,15 @@
 	        fork="yes">
 	        <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
 	   </java>
+	 	<sql driver="${db.driver}"
+             url="${db.url}"
+             onerror="continue"
+	 		 userid="sa"
+	 		 password=""
+             src="data/POSdbData.script">  
+            <classpath refid="run.classpath"/>
+        </sql> 
+	 	
 	</target>
 	
 	<target name="dbmanager" description="Start the HSQLDB manager">
