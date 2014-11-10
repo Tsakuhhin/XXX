@@ -3,26 +3,35 @@
 <project name="XXX" default="current-number">
 
 	<property file="version.properties"/>
-	<property name="build.number" 		value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
-	<property name="src.dir" 				value="${basedir}/src"/>
+	
+	<!-- Source -->
+	<property name="src.dir" 			value="${basedir}/src"/>
+	<property name="test.dir"   		value="${basedir}/test"/>
+	
 	<property name="dist.dir" 			value="${basedir}/dist"/>
 	<property name="conf.dir" 			value="${basedir}/etc"/>
 	<property name="doc.dir" 			value="${build.dir}/doc"/>
 	<property name="test.reports.dir" 	value="${build.dir}/reports/"/>
-	<property name="jar.dir" 				value="build/jar"/>
-	<property name="build.dir" 				value="${basedir}/build"/>
-	<property name="main-class"  		value="ee.ut.math.tvt.XXX.Intro"/>
+	<property name="jar.dir" 			value="build/jar"/>
 	
+	<property name="main-class"  		value="ee.ut.math.tvt.XXX.Intro"/>
 	<property name="lib.dir" 			value="${basedir}/lib"/>
+	
+	<!-- Build -->
+	<property name="build.dir" 			value="${basedir}/build"/>
+	<property name="build.number" 		value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
+	<property name="build.test.dir"     value="${build.dir}/test"/>
 	
 	<!-- database variables -->
 	<property name="db.driver"			value="org.hsqldb.jdbcDriver"/>
 	<property name="data.dir"			value="${basedir}/data"/>
 	<property name="db.file"			value="${data.dir}/POSdb"/>
-	<property name="db.data.file"		value="${data.dir}/POSdbData"/>
+	<property name="db.data.file"		value="${data.dir}/POSdbData.script"/>
 	<property name="db.alias"			value="POS"/>
 	<property name="db.url" 			value="jdbc:hsqldb:hsql://localhost/POS"/>
 	<property name="lib.hibernate.dir"  value="${lib.dir}/hibernate"/>
+	<property name="db.solddata.file"  	value="${data.dir}/POSdbSoldItemData.script"/>
+	
 	
     <path id="compile.classpath">
     	<fileset dir="${lib.dir}">
@@ -96,9 +105,9 @@
 	</target>
 
 	<!-- Compiling source code -->
-	<target name="compile">
+	<target name="compile" description="compiling the code">
 		<!--><antcall target="revision"></antcall><-->
-		<javac srcdir="${src}"/>
+		<javac srcdir="src"/>
 	</target>
 	
     <target name="run" description="executes your application via class Intro">
@@ -113,7 +122,7 @@
 	
     <target name="dist" description="creates in the folder build/jar a separate JAR file" depends="revision">
         <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/XXX.jar" basedir="${build}/classes">
+        <jar destfile="build/jar/XXX.jar" basedir="build/classes">
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
             </manifest>
@@ -121,12 +130,14 @@
     </target>
 
 	<target name="jrun" description="opens your intro window using the JAR file created by your dist ANT target" depends="dist">
-		<java jar="${jar}/XXX.jar" fork="true"/>
+		<java jar="jar/XXX.jar" fork="true"/>
 	</target>
 	
 	<target name="build" description="Build the system">
 		<mkdir dir="${build.dir}"/>
-		<mkdir dir="build/classes"/>
+		<mkdir dir="${test.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${build.test.dir}"/>
 		<javac includeantruntime="false" 
 			source="1.8" 
 			target="1.8" 
@@ -135,7 +146,7 @@
 			debuglevel="lines,vars,source" 
 			debug="true" 
 			destdir="build/classes" 
-			srcdir="${src}">
+			srcdir="src">
 			<classpath refid="compile.classpath"/>
 		</javac>
 	</target>
@@ -217,7 +228,7 @@
              onerror="continue"
 	 		 userid="sa"
 	 		 password=""
-             src="data/POSdbData.script">  
+             src="${db.data.file}">  
             <classpath refid="run.classpath"/>
         </sql>
 	 	<sql driver="${db.driver}"
@@ -225,7 +236,7 @@
              onerror="continue"
 	 		 userid="sa"
 	 		 password=""
-             src="data/POSdbData.script">  
+             src="${db.data.file}">  
             <classpath refid="run.classpath"/>
         </sql>
 	 	<sql driver="${db.driver}"
@@ -233,7 +244,7 @@
              onerror="continue"
 	 		 userid="sa"
 	 		 password=""
-             src="data/POSdbSoldItemData.script">  
+             src="${db.solddata.file}">  
             <classpath refid="run.classpath"/>
         </sql>
 	 	
@@ -247,5 +258,34 @@
 			<arg line="--user sa --url ${db.url}" />
 	    </java>
 	 </target>
+	
+	<target name="build-tests" depends="build" description="Build the system">
+		<javac
+            srcdir="${test.dir}"
+            destdir="${build.test.dir}"
+            debug="true"
+            debuglevel="lines,vars,source"
+            encoding="utf-8"
+            compiler="modern"
+            target="1.5"
+            source="1.5"
+        	classpathref="libs"
+        >
+			<classpath>
+				<pathelement path="${build.classes.dir}" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="test" depends="build-tests" description="Run the template application">
+			<junit>
+				<classpath refid="test-classpath" />
+
+				<formatter type="brief" usefile="false" />
+				<batchtest>
+					<fileset dir="${build.test.dir}" includes="**/*.class" />
+				</batchtest>
+			</junit>
+		</target>
 	
 </project>
