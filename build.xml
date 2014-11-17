@@ -23,15 +23,13 @@
 	<property name="build.test.dir"     value="${build.dir}/test"/>
 	
 	<!-- database variables -->
-	<property name="db.driver"			value="org.hsqldb.jdbcDriver"/>
-	<property name="data.dir"			value="${basedir.dir}/data"/>
-	<property name="db.file"			value="${data.dir}/POSdb"/>
-	<property name="db.data.file"		value="${data.dir}/POSdbData.script"/>
-	<property name="db.alias"			value="POS"/>
+	<property name="db.driver" 			value="org.hsqldb.jdbcDriver"/>
+	<property name="data" 				value="${basedir}/data"/>
+	<property name="db.file" 			value="${data}/POSdb.script"/>
+	<property name="db.data.file" 		value="${data}/POSdbData"/>
+	<property name="db.alias" 			value="POS"/>
 	<property name="db.url" 			value="jdbc:hsqldb:hsql://localhost/POS"/>
-	<property name="lib.hibernate.dir"  value="${lib.dir}/hibernate"/>
-	<property name="db.solddata.file"  	value="${data.dir}/POSdbSoldItemData.script"/>
-	
+	<property name="lib.hibernate.dir" 	value="${lib.dir}/hibernate"/>
 	
     <path id="compile.classpath">
     	<fileset dir="${lib.dir}">
@@ -217,47 +215,24 @@
 		</git>
 	</target>
 	
-	 <target name="startdb" description="Start the HSQLDB with the default params">
-	 	<java
-	        classname="org.hsqldb.Server" classpathref="run.classpath"
-	        fork="yes">
-	        <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
-	   </java>
-	 	<sql driver="${db.driver}"
-             url="${db.url}"
-             onerror="continue"
-	 		 userid="sa"
-	 		 password=""
-             src="${db.data.file}">  
-            <classpath refid="run.classpath"/>
-        </sql>
-	 	<sql driver="${db.driver}"
-             url="${db.url}"
-             onerror="continue"
-	 		 userid="sa"
-	 		 password=""
-             src="${db.data.file}">  
-            <classpath refid="run.classpath"/>
-        </sql>
-	 	<sql driver="${db.driver}"
-             url="${db.url}"
-             onerror="continue"
-	 		 userid="sa"
-	 		 password=""
-             src="${db.solddata.file}">  
-            <classpath refid="run.classpath"/>
-        </sql>
-	 	
+
+	<target name="startdb" description="Start the HSQLDB with the default params">
+		<java classname="org.hsqldb.Server" fork="yes" classpathref="run.classpath">
+			<arg line="-database.0 '${basedir}/data/POSdb.script' -dbname.0 '${db.alias}'"/>
+		</java>
+		<sql onerror="continue" src="${basedir}/data/POSdbData.script" password="" userid="sa" url="${db.url}" driver="${db.driver}">
+			<classpath refid="run.classpath"/>
+		</sql>
+		<sql onerror="continue" src="data/POSdbSoldItemData.script" password="" userid="sa" url="${db.url}" driver="${db.driver}">
+			<classpath refid="run.classpath"/>
+		</sql>
 	</target>
 	
 	<target name="dbmanager" description="Start the HSQLDB manager">
-		<java
-			classname="org.hsqldb.util.DatabaseManagerSwing"
-	        classpathref="run.classpath"
-	        fork="yes">
-			<arg line="--user sa --url ${db.url}" />
-	    </java>
-	 </target>
+		<java classname="org.hsqldb.util.DatabaseManagerSwing" fork="yes" classpathref="run.classpath">
+			<arg line="--user sa --url ${db.url}"/>
+		</java>
+	</target>
 	
 	<target name="build-tests" depends="build" description="Build the system">
 		<javac
