@@ -5,11 +5,12 @@
 	<property file="version.properties"/>
 	
 	<!-- Source -->
-	<property name="src.dir" 			value="${basedir}/src"/>
-	<property name="test.dir"   		value="${basedir}/test"/>
+	<property name="basedir.dir" 		value="${basedir}/task1"/>
+	<property name="src.dir" 			value="${basedir.dir}/src"/>
+	<property name="test.dir"   		value="${basedir.dir}/test"/>
 	
-	<property name="dist.dir" 			value="${basedir}/dist"/>
-	<property name="conf.dir" 			value="${basedir}/etc"/>
+	<property name="dist.dir" 			value="${basedir.dir}/dist"/>
+	<property name="conf.dir" 			value="${basedir.dir}/etc"/>
 	<property name="doc.dir" 			value="${build.dir}/doc"/>
 	<property name="test.reports.dir" 	value="${build.dir}/reports/"/>
 	<property name="jar.dir" 			value="build/jar"/>
@@ -18,13 +19,13 @@
 	<property name="lib.dir" 			value="${basedir}/lib"/>
 	
 	<!-- Build -->
-	<property name="build.dir" 			value="${basedir}/build"/>
+	<property name="build.dir" 			value="${basedir.dir}/build"/>
 	<property name="build.number" 		value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
 	<property name="build.test.dir"     value="${build.dir}/test"/>
 	
 	<!-- database variables -->
 	<property name="db.driver"			value="org.hsqldb.jdbcDriver"/>
-	<property name="data.dir"			value="${basedir}/data"/>
+	<property name="data.dir"			value="${basedir.dir}/data"/>
 	<property name="db.file"			value="${data.dir}/POSdb"/>
 	<property name="db.data.file"		value="${data.dir}/POSdbData.script"/>
 	<property name="db.alias"			value="POS"/>
@@ -173,7 +174,7 @@
 		<echo message="Committing... ${message}"/>
 		<git command="add">
 			<args>
-				<arg value="${basedir}" />
+				<arg value="${basedir.dir}" />
 			</args>
 		</git>
 		<git command="commit">
