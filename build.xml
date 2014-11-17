@@ -5,12 +5,11 @@
 	<property file="version.properties"/>
 	
 	<!-- Source -->
-	<property name="basedir.dir" 		value="${basedir}/task1"/>
-	<property name="src.dir" 			value="${basedir.dir}/src"/>
-	<property name="test.dir"   		value="${basedir.dir}/test"/>
+	<property name="src.dir" 			value="${basedir}/src"/>
+	<property name="test.dir"   		value="${basedir}/test"/>
 	
-	<property name="dist.dir" 			value="${basedir.dir}/dist"/>
-	<property name="conf.dir" 			value="${basedir.dir}/etc"/>
+	<property name="dist.dir" 			value="${basedir}/dist"/>
+	<property name="conf.dir" 			value="${basedir}/etc"/>
 	<property name="doc.dir" 			value="${build.dir}/doc"/>
 	<property name="test.reports.dir" 	value="${build.dir}/reports/"/>
 	<property name="jar.dir" 			value="build/jar"/>
@@ -19,7 +18,7 @@
 	<property name="lib.dir" 			value="${basedir}/lib"/>
 	
 	<!-- Build -->
-	<property name="build.dir" 			value="${basedir.dir}/build"/>
+	<property name="build.dir" 			value="${basedir}/build"/>
 	<property name="build.number" 		value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
 	<property name="build.test.dir"     value="${build.dir}/test"/>
 	
@@ -123,7 +122,7 @@
 	
     <target name="dist" description="creates in the folder build/jar a separate JAR file" depends="revision">
         <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/XXX.jar" basedir="build/classes">
+        <jar destfile="${jar.dir}/XXX.jar" basedir="build/classes.dir">
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
             </manifest>
@@ -131,14 +130,14 @@
     </target>
 
 	<target name="jrun" description="opens your intro window using the JAR file created by your dist ANT target" depends="dist">
-		<java jar="jar/XXX.jar" fork="true"/>
+		<java jar="${jar.dir}/XXX.jar" fork="true"/>
 	</target>
 	
 	<target name="build" description="Build the system">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${test.dir}"/>
-		<mkdir dir="${build.classes.dir}"/>
-		<mkdir dir="${build.test.dir}"/>
+		<mkdir dir="build/classes.dir"/>
+		<mkdir dir="build/test.dir"/>
 		<javac includeantruntime="false" 
 			source="1.8" 
 			target="1.8" 
@@ -146,8 +145,8 @@
 			encoding="utf-8" 
 			debuglevel="lines,vars,source" 
 			debug="true" 
-			destdir="build/classes" 
-			srcdir="src">
+			destdir="build/classes.dir" 
+			srcdir="${src.dir}">
 			<classpath refid="compile.classpath"/>
 		</javac>
 	</target>
