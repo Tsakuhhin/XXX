@@ -7,20 +7,32 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 
 public class SoldItemTest {
 	
+	 SoldItem item = new SoldItem("Lauaviin", 3); 
+	 SoldItem item2 = new SoldItem("ZeroQuantityTest", 0);
+	
+	
 	@Before
 	public void setUp() {
-	    item = new SoldItem("Lauaviin", 3); 
+	   
 	}
 	
 	@Test
 	public void testGetSum(){
-		item.getPrice * item.getGuantity;
+		assertEquals(item.getSum(), 5, 0.0001);
 	}
 	
 	@Test
 	public void testGetSumWithZeroQuantity() {
-		SoldItem item = new SoldItem(item, 0);
-	    
-	    assertEquals(item.getPrice(), 0.0, 0.0001);
+		 assertEquals(item2.getSum(), 0, 0.0001);
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		System.out.println("SoldItemTest class method passed");
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		System.out.println("SoldItemTest class passed");
 	}
 }
